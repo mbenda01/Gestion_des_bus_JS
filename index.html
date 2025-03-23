@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TransitFlow</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="components/Login/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">TransitFlow</div>
+        <div class="login-card">
+            <h3>Welcome Back!</h3>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Entrer votre email" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" placeholder="Entrer votre mot de passe" required>
+                </div>
+                <div class="text-end mb-4">
+                    <a href="#">Mot de passe oublié ?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Je me connecte</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fichier JavaScript pour la gestion de la connexion -->
+    <script type="module" src="components/Login/login.js"></script>
+</body>
+</html>
