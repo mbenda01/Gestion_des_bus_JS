@@ -16,8 +16,7 @@
                 <h4>TransitFlow</h4>
                 <a href="../Bus/bus_list.html">Gestion des Bus</a>
                 <a href="drivers.html" class="active">Gestion des Conducteurs</a>
-                <a href="#">Statistiques du Jour</a>
-                <a href="#">Mes Notifications</a>
+                <a href="notifications.html">Mes Notifications</a>
             </div>
             <div class="bottom-links">
                 <a href="#">Paramètres</a>
@@ -27,16 +26,38 @@
 
         <!-- Main Content -->
         <div class="main-content">
+            <div class="top-bar d-flex justify-content-between align-items-center mb-4">
+                <div class="greeting">Bonjour Chérif, <span id="currentDate"></span></div>
+                <div class="icons d-flex gap-3">
+                    <img id="userIcon" src="../../assets/icon-removebg-preview.png" alt="User Icon" style="width: 24px; cursor: pointer;">
+                    <img id="notificationIcon" src="../../assets/notifs-removebg-preview.png" alt="Notifications Icon" style="width: 24px; cursor: pointer;">                    
+                </div>
+            </div>
+
+            <div class="search-bar mb-4 d-flex align-items-center">
+                <input type="text" placeholder="Rechercher un conducteur par téléphone, matricule ou nom..." class="form-control me-2" id="searchInput">
+                <select class="form-select me-2" id="typePermisFilter">
+                    <option selected>Type de Permis</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+                <button class="btn btn-secondary">Exporter</button>
+            </div>
+
             <h2 class="d-flex justify-content-between align-items-center">
                 Gestion des Conducteurs
                 <button class="btn btn-primary" id="addConducteur">+ Nouveau Conducteur</button>
             </h2>
+
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Identifiant</th>
+                        <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prénom</th>
+                        <th>Téléphone</th>
                         <th>Type de Permis</th>
                         <th>Date d'Affectation</th>
                         <th>Statut</th>
@@ -48,6 +69,99 @@
         </div>
     </div>
 
+    <!-- Modal Profil Utilisateur -->
+    <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="userProfileModalLabel">Profil Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- Photo de profil -->
+                    <img id="profileImage" src="../../assets/icon-removebg-preview.png" alt="Photo de Profil" class="modal-profile-picture">
+                    
+                    <!-- Télécharger une nouvelle image -->
+                    <div class="mt-3 mb-4">
+                        <label for="profileImageInput" class="form-label text-dark">Changer l'image de profil :</label>
+                        <input type="file" id="profileImageInput" accept="image/*" class="form-control">
+                    </div>
+
+                    <!-- Informations utilisateur -->
+                    <div class="user-info text-start text-dark">
+                        <p><strong>Nom :</strong> Diaw</p>
+                        <p><strong>Prénom :</strong> Chérif</p>
+                        <p><strong>Téléphone :</strong> 77 777 77 77</p>
+                        <p><strong>Email :</strong> diawcherif@gmail.com</p>
+                        <p><strong>Adresse :</strong> Maristes</p>
+                        <p><strong>Poste :</strong> Responsable de Parc</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ajouter/Modifier Conducteur -->
+    <div class="modal fade" id="conducteurFormModal" tabindex="-1" aria-labelledby="conducteurFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="conducteurFormModalLabel">Ajouter un Conducteur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="conducteurForm">
+                        <div class="mb-3">
+                            <label for="matricule" class="form-label text-dark">Matricule</label>
+                            <input type="text" class="form-control" id="matricule" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nom" class="form-label text-dark">Nom</label>
+                            <input type="text" class="form-control" id="nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label text-dark">Prénom</label>
+                            <input type="text" class="form-control" id="prenom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telephone" class="form-label text-dark">Téléphone</label>
+                            <input type="text" class="form-control" id="telephone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="typePermis" class="form-label text-dark">Type de Permis</label>
+                            <select class="form-select" id="typePermis" required>
+                                <option value="" selected disabled>Choisir le type de permis</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateAffectation" class="form-label text-dark">Date d'Affectation</label>
+                            <input type="date" class="form-control" id="dateAffectation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="statut" class="form-label text-dark">Statut</label>
+                            <input type="text" class="form-control" id="statut" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="saveConducteur">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="conducteurs.js"></script>
 </body>
 </html>
