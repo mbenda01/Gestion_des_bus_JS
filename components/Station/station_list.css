@@ -44,3 +44,10 @@ body {
 .btn-primary:hover {
     background-color: #3c43a6;
 }
+
+/* Ajoute ceci à la fin de ton fichier CSS */
+.bottom-links {
+    position: absolute;
+    bottom: 20px; /* Distance par rapport au bas du sidebar */
+    left: 20px;
+}
