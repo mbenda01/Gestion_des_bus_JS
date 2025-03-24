@@ -165,4 +165,11 @@ document.getElementById('notificationIcon').addEventListener('click', () => {
     window.location.href = "notifications.html";
 });
 
-
+function logout() {
+    // Effacer les données de connexion (si tu utilises localStorage ou sessionStorage)
+    localStorage.removeItem('email'); // Par exemple, si tu stockes l'email dans le localStorage
+    localStorage.removeItem('password');
+    
+    // Rediriger vers la page de login
+    window.location.href = "../Login/login.html";
+}

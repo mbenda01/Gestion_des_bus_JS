@@ -1,4 +1,4 @@
-const arrets = [
+const arrets = JSON.parse(localStorage.getItem("arrets")) || [
     { numero: "A001", nom: "Arrêt Liberté 6", lignes: ["L001"] },
     { numero: "A002", nom: "Arrêt Nord Foire", lignes: ["L001", "L002"] },
     { numero: "A003", nom: "Arrêt Zone A", lignes: ["L001"] },
@@ -18,6 +18,11 @@ const arrets = [
 let selectedArret = null;
 let currentPage = 1;
 const itemsPerPage = 5;
+
+// Sauvegarder les arrêts dans le localStorage
+function saveArretsToLocalStorage() {
+    localStorage.setItem("arrets", JSON.stringify(arrets));
+}
 
 // Affichage des arrêts avec pagination
 function renderArretTable(filteredArrets = arrets) {
@@ -50,7 +55,6 @@ function renderArretTable(filteredArrets = arrets) {
     updatePaginationControls(filteredArrets);
 }
 
-// Fonction de mise à jour des boutons de pagination
 function updatePaginationControls(filteredArrets) {
     const totalPages = Math.ceil(filteredArrets.length / itemsPerPage);
     const paginationContainer = document.getElementById("pagination");
@@ -76,22 +80,8 @@ function updatePaginationControls(filteredArrets) {
     });
 }
 
-// Fonction pour appliquer les filtres
-function applyFilters() {
-    const searchInput = document.getElementById("searchInput").value.toLowerCase();
-    const ligneFilter = document.getElementById("ligneFilter").value;
 
-    const filteredArrets = arrets.filter(arret => {
-        const matchesSearch = arret.nom.toLowerCase().includes(searchInput) || arret.numero.toLowerCase().includes(searchInput);
-        const matchesLigne = ligneFilter === "Ligne Associée" || arret.lignes.includes(ligneFilter);
-
-        return matchesSearch && matchesLigne;
-    });
-
-    renderArretTable(filteredArrets);
-}
-
-// Ajouter ou modifier un arrêt
+// Fonction pour ajouter ou modifier un arrêt
 document.getElementById("saveArret").addEventListener("click", () => {
     const numero = document.getElementById("numero").value;
     const nom = document.getElementById("nom").value;
@@ -99,6 +89,13 @@ document.getElementById("saveArret").addEventListener("click", () => {
 
     if (!numero || !nom || lignes.length === 0) {
         alert("Veuillez remplir tous les champs.");
+        return;
+    }
+
+    // Vérifier si le numéro existe déjà dans la liste des arrêts
+    const existingArret = arrets.find(arret => arret.numero === numero);
+    if (existingArret && selectedArret === null) {
+        alert("Ce numéro d'arrêt existe déjà. Veuillez choisir un autre numéro.");
         return;
     }
 
@@ -114,9 +111,44 @@ document.getElementById("saveArret").addEventListener("click", () => {
     document.getElementById("arretForm").reset();
     applyFilters();
 
+    // Sauvegarder les arrêts après modification ou ajout
+    saveArretsToLocalStorage();
+
     const arretFormModal = bootstrap.Modal.getOrCreateInstance(document.getElementById("arretFormModal"));
     arretFormModal.hide();
 });
+
+
+// Supprimer un arrêt
+function deleteArret(index) {
+    if (confirm("Voulez-vous vraiment supprimer cet arrêt ?")) {
+        arrets.splice(index, 1);
+        applyFilters();
+
+        // Sauvegarder les arrêts après suppression
+        saveArretsToLocalStorage();
+    }
+}
+
+// Initialiser l'affichage avec les arrêts stockés ou par défaut
+applyFilters();
+
+
+// Fonction pour appliquer les filtres
+function applyFilters() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const ligneFilter = document.getElementById("ligneFilter").value;
+
+    const filteredArrets = arrets.filter(arret => {
+        const matchesSearch = arret.nom.toLowerCase().includes(searchInput) || arret.numero.toLowerCase().includes(searchInput);
+        const matchesLigne = ligneFilter === "Ligne Associée" || arret.lignes.includes(ligneFilter);
+
+        return matchesSearch && matchesLigne;
+    });
+
+    renderArretTable(filteredArrets);
+}
+
 
 // Afficher le modal d'ajout d'arrêt
 document.getElementById("addArret").addEventListener("click", () => {
@@ -128,26 +160,6 @@ document.getElementById("addArret").addEventListener("click", () => {
     arretFormModal.show();
 });
 
-// Modifier un arrêt
-function editArret(index) {
-    selectedArret = index;
-    const arret = arrets[index];
-
-    document.getElementById("numero").value = arret.numero;
-    document.getElementById("nom").value = arret.nom;
-    document.getElementById("lignes").value = arret.lignes.join(", ");
-
-    document.getElementById("arretFormModalLabel").textContent = "Modifier un Arrêt";
-    new bootstrap.Modal(document.getElementById("arretFormModal")).show();
-}
-
-// Supprimer un arrêt
-function deleteArret(index) {
-    if (confirm("Voulez-vous vraiment supprimer cet arrêt ?")) {
-        arrets.splice(index, 1);
-        applyFilters();
-    }
-}
 
 // Recherche dynamique
 document.getElementById("searchInput").addEventListener("input", applyFilters);
@@ -197,4 +209,11 @@ document.getElementById('notificationIcon').addEventListener('click', () => {
     window.location.href = "notifications.html";
 });
 
-
+function logout() {
+    // Effacer les données de connexion (si tu utilises localStorage ou sessionStorage)
+    localStorage.removeItem('email'); // Par exemple, si tu stockes l'email dans le localStorage
+    localStorage.removeItem('password');
+    
+    // Rediriger vers la page de login
+    window.location.href = "../Login/login.html";
+}

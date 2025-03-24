@@ -64,7 +64,7 @@ let selectedLigne = null;
 let currentPage = 1;
 const itemsPerPage = 5;
 
-// Fonction pour appliquer les filtres
+// Fonction pour appliquer les filtres 
 function applyFilters() {
     const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
     filteredLignes = lignes.filter(ligne =>
@@ -129,12 +129,12 @@ function updatePaginationControls() {
     `;
 }
 
-function changePage(direction) {
+function changePage(direction) { 
     currentPage += direction;
     renderLigneTable();
 }
 
-// Modifier une ligne
+// Modifier une ligne 
 function editLigne(index) {
     const ligne = filteredLignes[index];
     const nouveauTarif = prompt("Modifier le tarif de la ligne :", ligne.tarif);
@@ -145,7 +145,7 @@ function editLigne(index) {
     }
 }
 
-// Supprimer une ligne
+// Supprimer une ligne  
 function deleteLigne(index) {
     if (confirm("Voulez-vous vraiment supprimer cette ligne ?")) {
         lignes.splice(index, 1);
@@ -172,7 +172,7 @@ function downloadCSV() {
     URL.revokeObjectURL(url);
 }
 
-// Ajouter une Nouvelle Ligne
+// Ajouter une Nouvelle Ligne 
 document.getElementById("addLigne").addEventListener("click", () => {
     selectedLigne = null;
     document.getElementById("ligneForm").reset();
@@ -219,3 +219,12 @@ document.getElementById('userIcon').addEventListener('click', () => {
 document.getElementById('notificationIcon').addEventListener('click', () => {
     window.location.href = "../Arret/notifications.html";
 });
+
+function logout() {
+    // Effacer les données de connexion (si tu utilises localStorage ou sessionStorage)
+    localStorage.removeItem('email'); // Par exemple, si tu stockes l'email dans le localStorage
+    localStorage.removeItem('password');
+    
+    // Rediriger vers la page de login
+    window.location.href = "../Login/login.html";
+}

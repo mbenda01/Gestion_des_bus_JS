@@ -1,3 +1,5 @@
+
+
 const buses = [
     { immatriculation: "DK-001", type: "Tata", places: 30, kilometrage: 120, etat: "Actif" },
     { immatriculation: "DK-002", type: "Car rapide", places: 20, kilometrage: 200, etat: "Hors service" },
@@ -256,3 +258,13 @@ profileImageInput.addEventListener('change', (event) => {
         reader.readAsDataURL(file);
     }
 });
+
+function logout() {
+    // Effacer les données de connexion (si tu utilises localStorage ou sessionStorage)
+    localStorage.removeItem('email'); // Par exemple, si tu stockes l'email dans le localStorage
+    localStorage.removeItem('password');
+    
+    // Rediriger vers la page de login
+    window.location.href = "../Login/login.html";
+}
+
