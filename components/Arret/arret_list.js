@@ -19,12 +19,10 @@ let selectedArret = null;
 let currentPage = 1;
 const itemsPerPage = 5;
 
-// Sauvegarder les arrêts dans le localStorage
 function saveArretsToLocalStorage() {
     localStorage.setItem("arrets", JSON.stringify(arrets));
 }
 
-// Affichage des arrêts avec pagination
 function renderArretTable(filteredArrets = arrets) {
     const arretTable = document.getElementById("arretTable");
     arretTable.innerHTML = "";
@@ -81,7 +79,6 @@ function updatePaginationControls(filteredArrets) {
 }
 
 
-// Fonction pour ajouter ou modifier un arrêt
 document.getElementById("saveArret").addEventListener("click", () => {
     const numero = document.getElementById("numero").value;
     const nom = document.getElementById("nom").value;
@@ -92,7 +89,6 @@ document.getElementById("saveArret").addEventListener("click", () => {
         return;
     }
 
-    // Vérifier si le numéro existe déjà dans la liste des arrêts
     const existingArret = arrets.find(arret => arret.numero === numero);
     if (existingArret && selectedArret === null) {
         alert("Ce numéro d'arrêt existe déjà. Veuillez choisir un autre numéro.");
@@ -102,16 +98,15 @@ document.getElementById("saveArret").addEventListener("click", () => {
     const newArret = { numero, nom, lignes };
 
     if (selectedArret !== null) {
-        arrets[selectedArret] = newArret; // Modification d'un arrêt existant
+        arrets[selectedArret] = newArret;
     } else {
-        arrets.push(newArret); // Ajout d'un nouvel arrêt
+        arrets.push(newArret);
     }
 
     selectedArret = null;
     document.getElementById("arretForm").reset();
     applyFilters();
 
-    // Sauvegarder les arrêts après modification ou ajout
     saveArretsToLocalStorage();
 
     const arretFormModal = bootstrap.Modal.getOrCreateInstance(document.getElementById("arretFormModal"));
@@ -119,22 +114,18 @@ document.getElementById("saveArret").addEventListener("click", () => {
 });
 
 
-// Supprimer un arrêt
 function deleteArret(index) {
     if (confirm("Voulez-vous vraiment supprimer cet arrêt ?")) {
         arrets.splice(index, 1);
         applyFilters();
 
-        // Sauvegarder les arrêts après suppression
         saveArretsToLocalStorage();
     }
 }
 
-// Initialiser l'affichage avec les arrêts stockés ou par défaut
 applyFilters();
 
 
-// Fonction pour appliquer les filtres
 function applyFilters() {
     const searchInput = document.getElementById("searchInput").value.toLowerCase();
     const ligneFilter = document.getElementById("ligneFilter").value;
@@ -150,7 +141,6 @@ function applyFilters() {
 }
 
 
-// Afficher le modal d'ajout d'arrêt
 document.getElementById("addArret").addEventListener("click", () => {
     selectedArret = null;
     document.getElementById("arretForm").reset();
@@ -161,11 +151,10 @@ document.getElementById("addArret").addEventListener("click", () => {
 });
 
 
-// Recherche dynamique
 document.getElementById("searchInput").addEventListener("input", applyFilters);
 document.getElementById("ligneFilter").addEventListener("change", applyFilters);
 
-// Affichage initial
+
 applyFilters();
 
 // Exporter la liste des arrêts en CSV
